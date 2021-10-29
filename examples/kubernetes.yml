@@ -1,0 +1,45 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: staticweb
+  namespace: default
+spec:
+  selector:
+    app: staticweb
+  ports:
+    - protocol: TCP
+      port: 80
+      name: web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staticweb
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: staticweb
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: staticweb
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - image: docker.io/nitecon/staticweb:latest
+          name: staticweb
+          ports:
+            - containerPort: 80
+          env:
+            - name: BIND_PORT
+              value: "80"
+            - name: WEB_DIR
+              value: "/data"
