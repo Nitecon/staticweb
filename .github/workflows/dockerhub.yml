@@ -60,7 +60,9 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/trader:${{ steps.vars.outputs.sha_short }}
+          tags:
+            - ${{ secrets.DOCKER_HUB_USERNAME }}/staticweb:${{ steps.vars.outputs.sha_short }}
+            - latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
