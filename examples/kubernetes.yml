@@ -38,8 +38,21 @@ spec:
           name: staticweb
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              memory: 64Mi
+            requests:
+              memory: 64Mi
           env:
             - name: BIND_PORT
               value: "80"
             - name: WEB_DIR
               value: "/data"
+          volumeMounts:
+            - mountPath: /data
+              name: staticdata
+      volumes:
+        - name: staticdata
+          hostPath:
+            path: /data/web/static
+            type: Directory
