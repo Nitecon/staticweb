@@ -18,12 +18,12 @@ func InitRouter() *httprouter.Router{
 
 	webDir := os.Getenv("WEB_DIR")
 	if webDir == ""{
-		webDir = "./"
+		webDir = "/data"
 	}
 
 
 	/* Static file router */
-	fileServer := http.FileServer(http.Dir("./"))
+	fileServer := http.FileServer(http.Dir(webDir))
 	router.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		r.URL.Path = p.ByName("filepath")
 		fileServer.ServeHTTP(w, r)
